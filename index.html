@@ -1,0 +1,1363 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="面向内部运营人员的 B档口播视频 Bot 第一次使用上手指引。">
+  <title>B档口播视频 Bot｜第一次使用上手指引</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+    :root {
+      color-scheme: light;
+      --bg: #F5F6F8;
+      --surface: #FFFFFF;
+      --surface-alt: #F0F2F5;
+      --surface-hover: #FAFAFB;
+      --surface-accent: #FFF3F3;
+      --border: #DDE1E7;
+      --border-strong: #B8C0CC;
+      --border-hover: #C51D34;
+      --text: #171A1F;
+      --text-secondary: #4E5969;
+      --text-tertiary: #7B8494;
+      --text-on-accent: #FFFFFF;
+      --accent: #C51D34;
+      --accent-hover: #A9162A;
+      --accent-active: #8F1224;
+      --accent-soft: #FBE4E7;
+      --bg-rgb: 245, 246, 248;
+      --surface-rgb: 255, 255, 255;
+      --accent-rgb: 197, 29, 52;
+      --text-rgb: 23, 26, 31;
+      --success: #16865C;
+      --success-soft: #E8F7F1;
+      --error: #C7352C;
+      --error-soft: #FCEBE9;
+      --warning: #A86300;
+      --warning-soft: #FFF4D6;
+      --info: #3370FF;
+      --info-soft: #EAF0FF;
+      --focus: #3370FF;
+      --shadow-subtle: 0 2px 10px rgba(var(--text-rgb), 0.05);
+      --shadow-elevated: 0 10px 30px rgba(var(--text-rgb), 0.09);
+      --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Inter, sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 400 16px/1.75 var(--font-sans);
+      letter-spacing: 0.02em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, summary, a { -webkit-tap-highlight-color: transparent; }
+
+    button, input, textarea { font: inherit; }
+
+    a { color: inherit; }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1, h2, h3 {
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    h1 {
+      max-width: 880px;
+      margin-bottom: 24px;
+      font-size: clamp(38px, 5vw, 64px);
+      font-weight: 700;
+      line-height: 1.18;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: 650;
+      line-height: 1.55;
+    }
+
+    p { color: var(--text-secondary); }
+
+    :focus-visible {
+      outline: 3px solid rgba(var(--accent-rgb), 0.24);
+      outline-offset: 3px;
+    }
+
+    [id] { scroll-margin-top: 82px; }
+
+    .container {
+      width: min(100%, 1180px);
+      margin-inline: auto;
+      padding-inline: clamp(18px, 4vw, 48px);
+    }
+
+    .narrow { max-width: 760px; }
+
+    .section { padding-block: clamp(58px, 8vw, 96px); }
+
+    .section--surface {
+      border-block: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: 4px minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 34px;
+    }
+
+    .section-heading::before {
+      content: "";
+      border-radius: 99px;
+      background: var(--accent);
+    }
+
+    .section-heading p {
+      max-width: 760px;
+      margin-bottom: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      border-radius: 99px;
+      background: var(--accent);
+    }
+
+    .page-nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid var(--border);
+      background: rgba(var(--surface-rgb), 0.95);
+    }
+
+    .page-nav__inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--text);
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand__mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: var(--accent);
+      color: var(--text-on-accent);
+      font: 700 18px/1 Inter, var(--font-sans);
+    }
+
+    .page-nav__links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      overflow-x: auto;
+    }
+
+    .page-nav__link {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 160ms ease;
+    }
+
+    .page-nav__link:hover,
+    .page-nav__link:active { color: var(--accent); }
+
+    .hero { padding-block: clamp(72px, 10vw, 126px); }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.65fr);
+      gap: clamp(36px, 7vw, 88px);
+      align-items: end;
+    }
+
+    .hero__accent { color: var(--accent); }
+
+    .hero__lead {
+      max-width: 750px;
+      margin-bottom: 30px;
+      font-size: clamp(17px, 2vw, 20px);
+    }
+
+    .hero__actions,
+    .copy-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      background: var(--accent);
+      color: var(--text-on-accent);
+      font: 600 14px/1.4 var(--font-sans);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .button:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .button:active { background: var(--accent-active); border-color: var(--accent-active); transform: translateY(1px); }
+    .button:disabled { opacity: 0.46; cursor: not-allowed; transform: none; }
+
+    .button--secondary {
+      background: var(--surface);
+      color: var(--accent);
+    }
+
+    .button--secondary:hover { background: var(--surface-accent); }
+    .button--secondary:active { background: var(--accent-soft); }
+
+    .button--small {
+      min-height: 40px;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .hero-card,
+    .card,
+    .step-panel,
+    .duration-card,
+    .trouble-card,
+    .final-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .hero-card {
+      padding: 24px;
+      border-top: 4px solid var(--accent);
+    }
+
+    .hero-card__label {
+      margin-bottom: 14px;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-card__title {
+      margin-bottom: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .hero-card p { margin-bottom: 18px; }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .badge {
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-alt);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.4;
+    }
+
+    .badge--active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-active); }
+    .badge--success { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+    .badge--warning { border-color: var(--warning); background: var(--warning-soft); color: var(--warning); }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist__item {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      color: var(--text-secondary);
+    }
+
+    .checklist__mark {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      margin-top: 3px;
+      border-radius: 50%;
+      background: var(--success-soft);
+      color: var(--success);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .prep-grid,
+    .duration-grid,
+    .trouble-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card,
+    .duration-card {
+      padding: clamp(20px, 3vw, 28px);
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .card:hover,
+    .duration-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-elevated);
+      transform: translateY(-2px);
+    }
+
+    .card__number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 750;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    .alert {
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text-secondary);
+    }
+
+    .alert strong { color: var(--text); }
+    .alert--warning { border-color: var(--warning); background: var(--warning-soft); }
+    .alert--success { border-color: var(--success); background: var(--success-soft); }
+    .alert--info { border-color: var(--info); background: var(--info-soft); }
+
+    .prep-note { margin-top: 22px; }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.78fr) minmax(0, 2fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .step-list {
+      position: sticky;
+      top: 88px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .step-tab {
+      min-height: 64px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text-secondary);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+    }
+
+    .step-tab:hover { border-color: var(--border-hover); background: var(--surface-hover); }
+    .step-tab:active { background: var(--accent-soft); }
+    .step-tab[aria-selected="true"] { border-color: var(--accent); background: var(--surface-accent); color: var(--text); }
+
+    .step-tab__number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--surface-alt);
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
+
+    .step-tab[aria-selected="true"] .step-tab__number { background: var(--accent); color: var(--text-on-accent); }
+
+    .step-tab__text { display: grid; gap: 2px; }
+    .step-tab__title { font-weight: 700; }
+    .step-tab__hint { color: var(--text-tertiary); font-size: 12px; }
+
+    .step-panels { min-width: 0; }
+
+    .step-panel {
+      padding: clamp(24px, 4vw, 42px);
+      animation: panelIn 260ms ease both;
+    }
+
+    .step-panel + .step-panel { margin-top: 18px; }
+
+    .step-panel[hidden] { display: none; }
+
+    .step-panel__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step-panel__kicker {
+      margin-bottom: 6px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .step-panel__header h3 {
+      margin-bottom: 6px;
+      font-size: clamp(24px, 3vw, 32px);
+    }
+
+    .step-panel__header p { margin-bottom: 0; }
+
+    .step-panel__index {
+      flex: 0 0 auto;
+      color: var(--border-strong);
+      font: 700 clamp(34px, 5vw, 58px)/1 Inter, var(--font-sans);
+      letter-spacing: -0.04em;
+    }
+
+    .step-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .instruction-box {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-hover);
+    }
+
+    .instruction-box h4 {
+      margin: 0 0 9px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .instruction-box p:last-child { margin-bottom: 0; }
+
+    .message-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .message {
+      max-width: 680px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px 16px 16px 16px;
+      background: var(--surface-alt);
+      color: var(--text);
+    }
+
+    .message--user {
+      margin-left: auto;
+      border-color: var(--info);
+      border-radius: 16px 6px 16px 16px;
+      background: var(--info-soft);
+    }
+
+    .message__label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mention-token {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--info-soft);
+      color: var(--info);
+      font-weight: 700;
+    }
+
+    .message--user .mention-token { background: var(--surface); }
+
+    .message__reply,
+    .copy-text {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      line-height: 1.65;
+    }
+
+    .copy-block {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px dashed var(--border-strong);
+      border-radius: 12px;
+      background: var(--surface-hover);
+    }
+
+    .copy-block__label {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .copy-block .button { justify-self: start; }
+
+    .inline-note {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .duration-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .duration-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--accent);
+    }
+
+    .duration-card__time {
+      margin-bottom: 8px;
+      color: var(--accent);
+      font: 700 38px/1 Inter, var(--font-sans);
+      letter-spacing: -0.03em;
+    }
+
+    .duration-card__meta {
+      margin-bottom: 14px;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .duration-card p:last-child { margin-bottom: 0; }
+
+    .trouble-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .trouble-card { overflow: hidden; }
+
+    .trouble-card summary {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .trouble-card summary::-webkit-details-marker { display: none; }
+    .trouble-card summary:hover { background: var(--surface-hover); color: var(--accent); }
+
+    .trouble-card summary::after {
+      content: "+";
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--surface-alt);
+      color: var(--text-secondary);
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .trouble-card[open] summary::after { content: "−"; background: var(--accent-soft); color: var(--accent); }
+
+    .trouble-card__body {
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .trouble-card__body p { margin: 16px 0 0; }
+
+    .final-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
+      gap: clamp(28px, 5vw, 64px);
+      padding: clamp(28px, 5vw, 54px);
+      border-top: 4px solid var(--success);
+    }
+
+    .final-card__status {
+      display: grid;
+      align-content: center;
+      padding: 24px;
+      border-radius: 14px;
+      background: var(--success-soft);
+    }
+
+    .final-card__status strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--success);
+      font-size: clamp(23px, 3vw, 30px);
+      line-height: 1.4;
+    }
+
+    .final-card__status p { margin-bottom: 0; }
+
+    .footer {
+      padding-block: 34px;
+      border-top: 1px solid var(--border);
+      color: var(--text-tertiary);
+      font-size: 13px;
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .reveal { animation: fadeUp 520ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1024px) {
+      .hero__grid { grid-template-columns: 1fr; }
+      .hero-card { max-width: 620px; }
+      .guide-grid { grid-template-columns: 1fr; }
+      .step-list {
+        position: static;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .prep-grid,
+      .duration-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .page-nav__inner { align-items: flex-start; padding-block: 10px; }
+      .page-nav__links { width: 100%; }
+      .page-nav__inner { flex-wrap: wrap; }
+      .hero { padding-top: 58px; }
+      .step-columns,
+      .final-card { grid-template-columns: 1fr; }
+      .trouble-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .section { padding-block: 54px; }
+      .page-nav__links { gap: 18px; padding-bottom: 2px; }
+      .prep-grid,
+      .duration-grid { grid-template-columns: 1fr; }
+      .step-list { display: none; }
+      .step-panel[hidden] { display: block; }
+      .step-panel + .step-panel { margin-top: 16px; }
+      .step-panel__header { display: grid; grid-template-columns: 1fr auto; }
+      .copy-block .button,
+      .copy-actions .button { width: 100%; }
+      .message { max-width: 100%; }
+      .footer__inner { display: grid; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-nav">
+    <div class="container page-nav__inner">
+      <a class="brand" href="#top" aria-label="返回页面顶部">
+        <span class="brand__mark" aria-hidden="true">B</span>
+        <span>口播视频 Bot 上手指引</span>
+      </a>
+      <nav class="page-nav__links" aria-label="页面导航">
+        <a class="page-nav__link" href="#prepare">开始前准备</a>
+        <a class="page-nav__link" href="#workflow">七步流程</a>
+        <a class="page-nav__link" href="#troubleshooting">遇到问题</a>
+        <a class="page-nav__link" href="#acceptance">验收成片</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="reveal">
+          <div class="eyebrow">内部运营 · 第一次使用</div>
+          <h1>从提交素材到收到成片，<span class="hero__accent">每一步都知道怎么回复</span></h1>
+          <p class="hero__lead">这份指引带你在飞书中完成一条 B档产品口播视频。跟着 Bot 的当前提示依次操作，不需要了解生成模型或技术流程。</p>
+          <div class="hero__actions">
+            <a class="button" href="#workflow">直接查看七步流程</a>
+            <a class="button button--secondary" href="#prepare">先检查素材</a>
+          </div>
+          <div class="meta-row" aria-label="当前 Bot 能力">
+            <span class="badge badge--active">8 / 15 / 30 秒</span>
+            <span class="badge">男声 / 女声</span>
+            <span class="badge">首帧人工确认</span>
+            <span class="badge">唯一脚本审核</span>
+          </div>
+        </div>
+
+        <aside class="hero-card reveal" aria-labelledby="done-title">
+          <div class="hero-card__label">什么才算完成</div>
+          <div class="hero-card__title" id="done-title">飞书话题中收到可播放的视频文件</div>
+          <p>“任务已提交”或“首帧已生成”都不是最终结果。</p>
+          <ul class="checklist">
+            <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">✓</span><span>视频可以正常打开和播放</span></li>
+            <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">✓</span><span>视频有口播声音</span></li>
+            <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">✓</span><span>产品外观和文案通过人工检查</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section--surface" id="prepare">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <div class="eyebrow">开始前准备</div>
+            <h2>先准备好三类内容</h2>
+            <p>资料一次准备完整，Bot 才能准确理解产品并开始生成首帧。</p>
+          </div>
+        </div>
+
+        <div class="prep-grid">
+          <article class="card reveal">
+            <div class="card__number" aria-hidden="true">1</div>
+            <h3>产品参考图</h3>
+            <p>准备 1～3 张同一个产品的清晰图片。尽量包含正面、侧面和细节，颜色、Logo、结构必须可辨认。</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__number" aria-hidden="true">2</div>
+            <h3>人物参考图</h3>
+            <p>准备 1 张当前要使用的人物图。人物应清晰完整，图片包括人物手部。后续更换人物图会让旧首帧和旧视频失效。</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__number" aria-hidden="true">3</div>
+            <h3>产品资料</h3>
+            <p>至少包含产品名称、产品卖点和画面背景。使用场景、目标人群、口播语气可以继续补充。</p>
+          </article>
+        </div>
+
+        <div class="alert alert--warning prep-note reveal">
+          <strong>群话题使用时，每条操作消息都要重新真实 @ Bot。</strong>
+          先用飞书的 @ 选择器选中 <strong>B档口播视频bot</strong>，再输入或粘贴内容。手动打出一串看起来像 @Bot 的普通文字不会触发它；同时保持“同时发送到群”未勾选。
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <div class="eyebrow">七步完成一条视频</div>
+            <h2>每一步，只做 Bot 当前要求的操作</h2>
+            <p>桌面端点击左侧步骤查看详情；手机端会按顺序展开全部内容。复制按钮只复制回复正文，发送前仍要在飞书中真实 @ Bot。</p>
+          </div>
+        </div>
+
+        <div class="guide-grid">
+          <div class="step-list" role="tablist" aria-label="视频制作步骤">
+            <button class="step-tab" id="tab-step-1" type="button" role="tab" aria-controls="step-1" aria-selected="true" tabindex="0">
+              <span class="step-tab__number">1</span>
+              <span class="step-tab__text"><span class="step-tab__title">提交素材</span><span class="step-tab__hint">图片和产品资料</span></span>
+            </button>
+            <button class="step-tab" id="tab-step-2" type="button" role="tab" aria-controls="step-2" aria-selected="false" tabindex="-1">
+              <span class="step-tab__number">2</span>
+              <span class="step-tab__text"><span class="step-tab__title">确认资料</span><span class="step-tab__hint">检查 Bot 的理解</span></span>
+            </button>
+            <button class="step-tab" id="tab-step-3" type="button" role="tab" aria-controls="step-3" aria-selected="false" tabindex="-1">
+              <span class="step-tab__number">3</span>
+              <span class="step-tab__text"><span class="step-tab__title">审核首帧</span><span class="step-tab__hint">先看产品和人物</span></span>
+            </button>
+            <button class="step-tab" id="tab-step-4" type="button" role="tab" aria-controls="step-4" aria-selected="false" tabindex="-1">
+              <span class="step-tab__number">4</span>
+              <span class="step-tab__text"><span class="step-tab__title">选择规格</span><span class="step-tab__hint">时长和音色</span></span>
+            </button>
+            <button class="step-tab" id="tab-step-5" type="button" role="tab" aria-controls="step-5" aria-selected="false" tabindex="-1">
+              <span class="step-tab__number">5</span>
+              <span class="step-tab__text"><span class="step-tab__title">审核脚本</span><span class="step-tab__hint">确认或指定修改</span></span>
+            </button>
+            <button class="step-tab" id="tab-step-6" type="button" role="tab" aria-controls="step-6" aria-selected="false" tabindex="-1">
+              <span class="step-tab__number">6</span>
+              <span class="step-tab__text"><span class="step-tab__title">等待生成</span><span class="step-tab__hint">不要重复提交</span></span>
+            </button>
+            <button class="step-tab" id="tab-step-7" type="button" role="tab" aria-controls="step-7" aria-selected="false" tabindex="-1">
+              <span class="step-tab__number">7</span>
+              <span class="step-tab__text"><span class="step-tab__title">验收成片</span><span class="step-tab__hint">播放并检查</span></span>
+            </button>
+          </div>
+
+          <div class="step-panels">
+            <article class="step-panel" id="step-1" role="tabpanel" aria-labelledby="tab-step-1" tabindex="0">
+              <header class="step-panel__header">
+                <div>
+                  <div class="step-panel__kicker">STEP 1</div>
+                  <h3>在群里 @ Bot，按照提示提交素材</h3>
+                  <p>Bot 会自动创建话题；进入话题后，按它当前的指引逐步发送对应内容。</p>
+                </div>
+                <div class="step-panel__index" aria-hidden="true">01</div>
+              </header>
+
+              <div class="step-columns">
+                <div class="instruction-box">
+                  <h4>你需要做什么</h4>
+                  <p>在目标群里真实 @B档口播视频bot，并发起视频制作。Bot 创建话题后，按照它每一步的提示发送对应内容，不要提前发送后续素材。</p>
+                </div>
+                <div class="instruction-box">
+                  <h4>Bot 接下来做什么</h4>
+                  <p>Bot 会自动创建话题，并逐步提示你发送产品图、人物图和产品资料；信息缺失时会直接告诉你还缺哪一项。</p>
+                </div>
+              </div>
+
+              <div class="message-stack" aria-label="飞书消息示例">
+                <div class="message message--user">
+                  <div class="message__label">在目标群里发送 · 先插入真实 @</div>
+                  <div><span class="mention-token">@B档口播视频bot</span> 开始制作产品口播视频</div>
+                </div>
+                <div class="message">
+                  <div class="message__label">Bot 回复</div>
+                  <div>Bot 会自动创建话题，并在话题中提示你发送第一项内容。</div>
+                </div>
+                <div class="message message--user">
+                  <div class="message__label">Bot 提示发送产品图时 · 先插入真实 @</div>
+                  <div><span class="mention-token">@B档口播视频bot</span> 产品图</div>
+                </div>
+                <div class="message message--user">
+                  <div class="message__label">Bot 提示发送人物图时 · 先插入真实 @</div>
+                  <div><span class="mention-token">@B档口播视频bot</span> 人物图</div>
+                </div>
+              </div>
+
+              <div class="copy-block">
+                <div class="copy-block__label">产品资料模板</div>
+                <div class="copy-text" id="copy-product-brief">产品名称：
+产品卖点：
+画面背景：</div>
+                <button class="button button--small button--secondary" type="button" data-copy-target="copy-product-brief">复制资料模板</button>
+              </div>
+
+              <div class="inline-note">图片发送前确认输入框中已经出现图片预览。Bot 没有回复时，先检查这一条消息里是否真的包含蓝色 @ 提及标签。</div>
+            </article>
+
+            <article class="step-panel" id="step-2" role="tabpanel" aria-labelledby="tab-step-2" tabindex="0">
+              <header class="step-panel__header">
+                <div>
+                  <div class="step-panel__kicker">STEP 2</div>
+                  <h3>检查 Bot 理解的资料</h3>
+                  <p>先核对产品名称、产品卖点和画面背景，再决定是否确认。</p>
+                </div>
+                <div class="step-panel__index" aria-hidden="true">02</div>
+              </header>
+
+              <div class="step-columns">
+                <div class="instruction-box">
+                  <h4>资料正确</h4>
+                  <p>回复“确认资料”。Bot 收到明确确认后，才会使用这些资料生成首帧。</p>
+                </div>
+                <div class="instruction-box">
+                  <h4>资料需要修改</h4>
+                  <p>直接说清楚哪一项要改，例如“背景改为室内办公空间”。修改后再次核对 Bot 回显。</p>
+                </div>
+              </div>
+
+              <div class="message-stack">
+                <div class="message">
+                  <div class="message__label">Bot 回复</div>
+                  <div>我理解到的资料如下：产品名称、产品卖点、画面背景……如无问题，请回复“确认资料”。</div>
+                </div>
+                <div class="message message--user">
+                  <div class="message__label">你发送 · 先插入真实 @</div>
+                  <div><span class="mention-token">@B档口播视频bot</span> <span class="message__reply">确认资料</span></div>
+                </div>
+              </div>
+
+              <div class="copy-actions">
+                <button class="button button--small" type="button" data-copy="确认资料">复制“确认资料”</button>
+                <button class="button button--small button--secondary" type="button" data-copy="背景改为室内办公空间">复制修改示例</button>
+              </div>
+            </article>
+
+            <article class="step-panel" id="step-3" role="tabpanel" aria-labelledby="tab-step-3" tabindex="0">
+              <header class="step-panel__header">
+                <div>
+                  <div class="step-panel__kicker">STEP 3</div>
+                  <h3>审核首帧，再决定是否继续</h3>
+                  <p>首帧通常需要 1～3 分钟。生成期间不用重复提交素材。</p>
+                </div>
+                <div class="step-panel__index" aria-hidden="true">03</div>
+              </header>
+
+              <div class="step-columns">
+                <div class="instruction-box">
+                  <h4>重点检查</h4>
+                  <p>产品颜色、Logo、外观结构和比例；人物形象、表情、手持比例；背景和整体构图。</p>
+                </div>
+                <div class="instruction-box">
+                  <h4>不满意怎么办</h4>
+                  <p>直接描述具体问题，例如“产品 Logo 应该是银色”“人物表情保持中性”。不要先确认再修改。</p>
+                </div>
+              </div>
+
+              <div class="message-stack">
+                <div class="message">
+                  <div class="message__label">Bot 回复</div>
+                  <div>首帧已经生成，请重点检查产品外观、人物形象和整体构图。</div>
+                </div>
+                <div class="message message--user">
+                  <div class="message__label">首帧正确时 · 先插入真实 @</div>
+                  <div><span class="mention-token">@B档口播视频bot</span> <span class="message__reply">确认首帧图</span></div>
+                </div>
+              </div>
+
+              <div class="copy-actions">
+                <button class="button button--small" type="button" data-copy="确认首帧图">复制“确认首帧图”</button>
+                <button class="button button--small button--secondary" type="button" data-copy="产品 Logo 应该是银色，人物表情保持中性，请重新生成首帧图">复制修改示例</button>
+              </div>
+
+              <div class="alert alert--info inline-note"><strong>已有可用首帧：</strong>在同一条消息上传图片并写“使用此图作为首帧”，Bot 会跳过首帧生成，仍然要求你明确确认首帧。</div>
+            </article>
+
+            <article class="step-panel" id="step-4" role="tabpanel" aria-labelledby="tab-step-4" tabindex="0">
+              <header class="step-panel__header">
+                <div>
+                  <div class="step-panel__kicker">STEP 4</div>
+                  <h3>在同一条消息选择时长和音色</h3>
+                  <p>当前支持 8 秒、15 秒、30 秒；每次都必须同时写男声或女声。</p>
+                </div>
+                <div class="step-panel__index" aria-hidden="true">04</div>
+              </header>
+
+              <div class="message-stack">
+                <div class="message">
+                  <div class="message__label">Bot 回复</div>
+                  <div>请选择视频时长和音色，并在同一条消息中回复。</div>
+                </div>
+                <div class="message message--user">
+                  <div class="message__label">你发送 · 先插入真实 @</div>
+                  <div><span class="mention-token">@B档口播视频bot</span> <span class="message__reply">15秒 女声</span></div>
+                </div>
+              </div>
+
+              <div class="copy-actions" aria-label="可复制的时长和音色示例">
+                <button class="button button--small" type="button" data-copy="8秒 女声">复制“8秒 女声”</button>
+                <button class="button button--small button--secondary" type="button" data-copy="15秒 男声">复制“15秒 男声”</button>
+                <button class="button button--small button--secondary" type="button" data-copy="30秒 女声">复制“30秒 女声”</button>
+              </div>
+
+              <div class="inline-note">只回复“15秒”或只回复“女声”不会进入下一步；“我想要一个15秒女声的视频”也不是标准格式。</div>
+            </article>
+
+            <article class="step-panel" id="step-5" role="tabpanel" aria-labelledby="tab-step-5" tabindex="0">
+              <header class="step-panel__header">
+                <div>
+                  <div class="step-panel__kicker">STEP 5</div>
+                  <h3>审核唯一一版口播脚本</h3>
+                  <p>检查每个时间段的口播、动作和表情，确认事实准确、说起来顺口。</p>
+                </div>
+                <div class="step-panel__index" aria-hidden="true">05</div>
+              </header>
+
+              <div class="step-columns">
+                <div class="instruction-box">
+                  <h4>脚本正确</h4>
+                  <p>回复“确认生成视频”。只有收到明确确认，Bot 才会开始生成正式视频。</p>
+                </div>
+                <div class="instruction-box">
+                  <h4>脚本需要修改</h4>
+                  <p>明确指出第几句和替换内容，例如“修改脚本：台词二改成……”。不要只说“更口语一点”。</p>
+                </div>
+              </div>
+
+              <div class="message-stack">
+                <div class="message">
+                  <div class="message__label">Bot 回复</div>
+                  <div>视频脚本已生成，请审核口播、动作和表情。回复“确认生成视频”继续。</div>
+                </div>
+                <div class="message message--user">
+                  <div class="message__label">你发送 · 先插入真实 @</div>
+                  <div><span class="mention-token">@B档口播视频bot</span> <span class="message__reply">确认生成视频</span></div>
+                </div>
+              </div>
+
+              <div class="copy-actions">
+                <button class="button button--small" type="button" data-copy="确认生成视频">复制“确认生成视频”</button>
+                <button class="button button--small button--secondary" type="button" data-copy="修改脚本：台词二改成：">复制修改模板</button>
+              </div>
+
+              <div class="alert alert--warning inline-note"><strong>事实核验提示不等于生成失败。</strong>如果 Bot 标出需要人工确认的说法，请先回到产品资料核对，必要时修改对应台词。</div>
+            </article>
+
+            <article class="step-panel" id="step-6" role="tabpanel" aria-labelledby="tab-step-6" tabindex="0">
+              <header class="step-panel__header">
+                <div>
+                  <div class="step-panel__kicker">STEP 6</div>
+                  <h3>视频排队后，等待 Bot 自动返回</h3>
+                  <p>8 秒和 15 秒通常预计 5～10 分钟；30 秒通常预计 20～30 分钟。</p>
+                </div>
+                <div class="step-panel__index" aria-hidden="true">06</div>
+              </header>
+
+              <div class="step-columns">
+                <div class="instruction-box">
+                  <h4>你需要做什么</h4>
+                  <p>保持当前话题，不需要继续发消息。可以先处理其他工作，等待 Bot 发送视频文件。</p>
+                </div>
+                <div class="instruction-box">
+                  <h4>Bot 接下来做什么</h4>
+                  <p>Bot 会在后台生成视频，完成后自动在当前话题中发送视频文件。</p>
+                </div>
+              </div>
+
+              <div class="message-stack">
+                <div class="message">
+                  <div class="message__label">Bot 回复</div>
+                  <div>收到确认。视频生成已经排队，完成后我会直接发送视频文件。</div>
+                </div>
+              </div>
+
+              <div class="alert alert--warning inline-note"><strong>不要因为界面暂时安静就重新提交。</strong>重复提交可能产生重复任务和额外费用。只有 Bot 明确提示失败或要求重试时再操作。</div>
+            </article>
+
+            <article class="step-panel" id="step-7" role="tabpanel" aria-labelledby="tab-step-7" tabindex="0">
+              <header class="step-panel__header">
+                <div>
+                  <div class="step-panel__kicker">STEP 7</div>
+                  <h3>打开成片并完成最终验收</h3>
+                  <p>必须在同一个飞书话题中看到并打开最终视频文件。</p>
+                </div>
+                <div class="step-panel__index" aria-hidden="true">07</div>
+              </header>
+
+              <div class="step-columns">
+                <div class="instruction-box">
+                  <h4>先检查播放</h4>
+                  <p>确认视频能正常打开、有声音、时长接近所选规格，不出现播放错误。</p>
+                </div>
+                <div class="instruction-box">
+                  <h4>再检查内容</h4>
+                  <p>确认产品颜色、Logo、结构、比例没有漂移；人物、动作、表情和口播事实符合要求。</p>
+                </div>
+              </div>
+
+              <div class="alert alert--success inline-note"><strong>看到可播放成片，才算真正完成。</strong>如果只收到链接、状态提示或中间画面，请不要把它记录为交付成功。</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--surface" id="duration">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <div class="eyebrow">如何选择时长</div>
+            <h2>时长越长，等待时间越久</h2>
+            <p>运营人员只需要选择成片时长和音色，生成期间无需额外操作。</p>
+          </div>
+        </div>
+
+        <div class="duration-grid">
+          <article class="duration-card reveal">
+            <div class="duration-card__time">8秒</div>
+            <div class="duration-card__meta">预计 5～10 分钟</div>
+            <p>适合快速展示单一核心卖点，等待时间相对更短。</p>
+          </article>
+          <article class="duration-card reveal">
+            <div class="duration-card__time">15秒</div>
+            <div class="duration-card__meta">预计 5～10 分钟</div>
+            <p>适合讲清多个卖点。完成后 Bot 会发送一个完整视频文件。</p>
+          </article>
+          <article class="duration-card reveal">
+            <div class="duration-card__time">30秒</div>
+            <div class="duration-card__meta">预计 20～30 分钟</div>
+            <p>适合信息较完整的产品介绍，脚本和成片审核需要更仔细。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="troubleshooting">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <div class="eyebrow">遇到问题怎么办</div>
+            <h2>先判断现在卡在哪一步</h2>
+            <p>展开与你当前情况相符的问题。不要跳过 Bot 当前提示，也不要盲目重复提交。</p>
+          </div>
+        </div>
+
+        <div class="trouble-grid">
+          <details class="trouble-card reveal">
+            <summary>发送消息后，Bot 没有回复</summary>
+            <div class="trouble-card__body"><p>先检查消息里是否真的通过飞书 @ 选择器选中了“B档口播视频bot”。普通文字形式的 @ 不会触发 Bot；图片和 @ 必须在同一条消息里。</p></div>
+          </details>
+          <details class="trouble-card reveal">
+            <summary>首帧生成时间比较久</summary>
+            <div class="trouble-card__body"><p>首帧通常需要 1～3 分钟。如果 Bot 提示仍在处理，就继续等待，不要重新提交素材，避免重复生成。</p></div>
+          </details>
+          <details class="trouble-card reveal">
+            <summary>首帧里的产品或人物不对</summary>
+            <div class="trouble-card__body"><p>不要回复“确认首帧图”。直接写清错误位置和正确要求，例如 Logo 颜色、产品比例、人物表情、手持关系或背景。</p></div>
+          </details>
+          <details class="trouble-card reveal">
+            <summary>想使用自己准备好的首帧</summary>
+            <div class="trouble-card__body"><p>在同一条消息中上传图片并写“使用此图作为首帧”。Bot 会把这张图设为当前首帧，然后等待你回复“确认首帧图”。</p></div>
+          </details>
+          <details class="trouble-card reveal">
+            <summary>脚本需要调整</summary>
+            <div class="trouble-card__body"><p>明确指定台词序号和替换内容，例如“修改脚本：台词二改成：……”。其余脚本会保留，并重新生成一版完整审核稿。</p></div>
+          </details>
+          <details class="trouble-card reveal">
+            <summary>已经使用“重开窗口”</summary>
+            <div class="trouble-card__body"><p>旧上下文、排队任务和轮询结果都已失效。请从第一步重新发送产品图、人物图和全部产品资料。</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--surface" id="acceptance">
+      <div class="container">
+        <div class="final-card reveal">
+          <div>
+            <div class="eyebrow">成片验收清单</div>
+            <h2>播放成功之后，再检查产品与内容</h2>
+            <ul class="checklist">
+              <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">1</span><span>视频能正常打开、播放，没有错误提示。</span></li>
+              <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">2</span><span>口播声音清楚，时长接近 8、15 或 30 秒。</span></li>
+              <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">3</span><span>产品颜色、Logo、材质、结构、比例和相对大小正确。</span></li>
+              <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">4</span><span>人物形象、动作、表情和产品使用方式符合要求。</span></li>
+              <li class="checklist__item"><span class="checklist__mark" aria-hidden="true">5</span><span>口播没有虚构体验、夸大承诺或偏离已提供卖点。</span></li>
+            </ul>
+          </div>
+          <aside class="final-card__status">
+            <strong>完成标准</strong>
+            <p>同一飞书话题中，最终视频文件已送达、可播放、有声音，并通过人工内容检查。</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>B档口播视频 Bot · 内部运营第一次使用指引</span>
+      <span>基于 2026-08-21 当前运行版本整理</span>
+    </div>
+  </footer>
+
+  <div class="sr-only" id="copy-status" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const tabs = [...document.querySelectorAll('[role="tab"]')];
+      const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+      const mobileQuery = window.matchMedia('(max-width: 680px)');
+      let activeId = tabs.find(tab => tab.getAttribute('aria-selected') === 'true')?.getAttribute('aria-controls') || panels[0]?.id;
+
+      function setActive(id, focusPanel = false) {
+        activeId = id;
+        const mobile = mobileQuery.matches;
+        tabs.forEach(tab => {
+          const selected = tab.getAttribute('aria-controls') === id;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+        panels.forEach(panel => {
+          panel.hidden = !mobile && panel.id !== id;
+        });
+        if (focusPanel && !mobile) document.getElementById(id)?.focus();
+      }
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => setActive(tab.getAttribute('aria-controls')));
+        tab.addEventListener('keydown', event => {
+          if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          let next = index;
+          if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+          if (event.key === 'Home') next = 0;
+          if (event.key === 'End') next = tabs.length - 1;
+          tabs[next].focus();
+          setActive(tabs[next].getAttribute('aria-controls'));
+        });
+      });
+
+      const syncResponsivePanels = () => setActive(activeId);
+      mobileQuery.addEventListener?.('change', syncResponsivePanels);
+      setActive(activeId);
+
+      const status = document.getElementById('copy-status');
+
+      async function copyText(value) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+          return;
+        }
+        const textarea = document.createElement('textarea');
+        textarea.value = value;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const copied = document.execCommand('copy');
+        textarea.remove();
+        if (!copied) throw new Error('copy failed');
+      }
+
+      document.querySelectorAll('[data-copy], [data-copy-target]').forEach(button => {
+        button.addEventListener('click', async () => {
+          const targetId = button.dataset.copyTarget;
+          const value = targetId ? document.getElementById(targetId)?.textContent.trim() : button.dataset.copy;
+          if (!value) return;
+          const original = button.textContent;
+          try {
+            await copyText(value);
+            button.textContent = '已复制';
+            status.textContent = `已复制：${value.split('\n')[0]}`;
+          } catch {
+            button.textContent = '复制失败，请手动选择';
+            status.textContent = '复制失败，请手动选择页面中的回复内容。';
+          }
+          window.setTimeout(() => { button.textContent = original; }, 1600);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
