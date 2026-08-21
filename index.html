@@ -416,6 +416,90 @@
 
     .prep-note { margin-top: 22px; }
 
+    .pipeline-shell {
+      padding: clamp(20px, 3vw, 30px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface-hover);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .pipeline-stage {
+      position: relative;
+      min-height: 156px;
+      display: grid;
+      align-content: start;
+      gap: 9px;
+      padding: 16px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .pipeline-stage:not(:last-child)::after {
+      content: "›";
+      position: absolute;
+      top: 24px;
+      right: -15px;
+      z-index: 2;
+      width: 12px;
+      color: var(--accent);
+      font: 700 24px/1 Inter, var(--font-sans);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .pipeline-stage:hover {
+      border-color: var(--accent);
+      background: var(--surface-accent);
+      box-shadow: var(--shadow-elevated);
+      transform: translateY(-2px);
+    }
+
+    .pipeline-stage:active { background: var(--accent-soft); transform: translateY(0); }
+
+    .pipeline-stage__number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--text-on-accent);
+      font: 700 14px/1 Inter, var(--font-sans);
+    }
+
+    .pipeline-stage__title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .pipeline-stage__detail {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.65;
+    }
+
+    .pipeline-note {
+      margin: 20px 0 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
     .guide-grid {
       display: grid;
       grid-template-columns: minmax(250px, 0.78fr) minmax(0, 2fr);
@@ -752,6 +836,9 @@
     @media (max-width: 1024px) {
       .hero__grid { grid-template-columns: 1fr; }
       .hero-card { max-width: 620px; }
+      .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .pipeline-stage { min-height: 132px; }
+      .pipeline-stage:not(:last-child)::after { display: none; }
       .guide-grid { grid-template-columns: 1fr; }
       .step-list {
         position: static;
@@ -776,6 +863,17 @@
       .page-nav__links { gap: 18px; padding-bottom: 2px; }
       .prep-grid,
       .duration-grid { grid-template-columns: 1fr; }
+      .pipeline { grid-template-columns: 1fr; }
+      .pipeline-stage { min-height: 0; grid-template-columns: 34px minmax(0, 1fr); align-items: center; }
+      .pipeline-stage__number { grid-row: 1 / span 2; }
+      .pipeline-stage:not(:last-child)::after {
+        display: block;
+        top: auto;
+        right: auto;
+        bottom: -18px;
+        left: 25px;
+        transform: rotate(90deg);
+      }
       .step-list { display: none; }
       .step-panel[hidden] { display: block; }
       .step-panel + .step-panel { margin-top: 16px; }
@@ -804,8 +902,8 @@
         <span>口播视频 Bot 上手指引</span>
       </a>
       <nav class="page-nav__links" aria-label="页面导航">
+        <a class="page-nav__link" href="#pipeline">流程总览</a>
         <a class="page-nav__link" href="#prepare">开始前准备</a>
-        <a class="page-nav__link" href="#workflow">七步流程</a>
         <a class="page-nav__link" href="#troubleshooting">遇到问题</a>
         <a class="page-nav__link" href="#acceptance">验收成片</a>
       </nav>
@@ -820,7 +918,7 @@
           <h1>从提交素材到收到成片，<span class="hero__accent">每一步都知道怎么回复</span></h1>
           <p class="hero__lead">这份指引带你在飞书中完成一条 B档产品口播视频。跟着 Bot 的当前提示依次操作，不需要了解生成模型或技术流程。</p>
           <div class="hero__actions">
-            <a class="button" href="#workflow">直接查看七步流程</a>
+            <a class="button" href="#pipeline">先看流程总览</a>
             <a class="button button--secondary" href="#prepare">先检查素材</a>
           </div>
           <div class="meta-row" aria-label="当前 Bot 能力">
@@ -844,7 +942,60 @@
       </div>
     </section>
 
-    <section class="section section--surface" id="prepare">
+    <section class="section section--surface" id="pipeline">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <div class="eyebrow">Pipeline 总览</div>
+            <h2>从群里 @ Bot，到收到成片</h2>
+            <p>先快速看完整流程。点击任一步，可以直接进入下面的详细操作说明。</p>
+          </div>
+        </div>
+
+        <div class="pipeline-shell reveal">
+          <div class="pipeline" aria-label="B档口播视频 Bot 七步流程">
+            <button class="pipeline-stage" type="button" data-step-target="step-1">
+              <span class="pipeline-stage__number">1</span>
+              <span class="pipeline-stage__title">群里 @ Bot</span>
+              <span class="pipeline-stage__detail">Bot 自动创建话题</span>
+            </button>
+            <button class="pipeline-stage" type="button" data-step-target="step-1">
+              <span class="pipeline-stage__number">2</span>
+              <span class="pipeline-stage__title">按提示交资料</span>
+              <span class="pipeline-stage__detail">产品图、人物图、产品信息</span>
+            </button>
+            <button class="pipeline-stage" type="button" data-step-target="step-2">
+              <span class="pipeline-stage__number">3</span>
+              <span class="pipeline-stage__title">确认资料</span>
+              <span class="pipeline-stage__detail">核对后回复“确认资料”</span>
+            </button>
+            <button class="pipeline-stage" type="button" data-step-target="step-3">
+              <span class="pipeline-stage__number">4</span>
+              <span class="pipeline-stage__title">审核首帧</span>
+              <span class="pipeline-stage__detail">确认画面或说明修改</span>
+            </button>
+            <button class="pipeline-stage" type="button" data-step-target="step-4">
+              <span class="pipeline-stage__number">5</span>
+              <span class="pipeline-stage__title">选择规格</span>
+              <span class="pipeline-stage__detail">时长和男声 / 女声</span>
+            </button>
+            <button class="pipeline-stage" type="button" data-step-target="step-5">
+              <span class="pipeline-stage__number">6</span>
+              <span class="pipeline-stage__title">审核脚本</span>
+              <span class="pipeline-stage__detail">确认或指定修改内容</span>
+            </button>
+            <button class="pipeline-stage" type="button" data-step-target="step-6">
+              <span class="pipeline-stage__number">7</span>
+              <span class="pipeline-stage__title">等待并验收</span>
+              <span class="pipeline-stage__detail">打开视频，检查声音和内容</span>
+            </button>
+          </div>
+          <p class="pipeline-note"><strong>操作原则：</strong>Bot 创建话题后，按照它当前的提示发送对应内容；群话题里的每条操作消息都要真实 @B档口播视频bot。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="prepare">
       <div class="container">
         <div class="section-heading reveal">
           <div>
@@ -879,7 +1030,7 @@
       </div>
     </section>
 
-    <section class="section" id="workflow">
+    <section class="section section--surface" id="workflow">
       <div class="container">
         <div class="section-heading reveal">
           <div>
@@ -1180,7 +1331,7 @@
       </div>
     </section>
 
-    <section class="section section--surface" id="duration">
+    <section class="section" id="duration">
       <div class="container">
         <div class="section-heading reveal">
           <div>
@@ -1210,7 +1361,7 @@
       </div>
     </section>
 
-    <section class="section" id="troubleshooting">
+    <section class="section section--surface" id="troubleshooting">
       <div class="container">
         <div class="section-heading reveal">
           <div>
@@ -1249,7 +1400,7 @@
       </div>
     </section>
 
-    <section class="section section--surface" id="acceptance">
+    <section class="section" id="acceptance">
       <div class="container">
         <div class="final-card reveal">
           <div>
@@ -1320,6 +1471,16 @@
       const syncResponsivePanels = () => setActive(activeId);
       mobileQuery.addEventListener?.('change', syncResponsivePanels);
       setActive(activeId);
+
+      document.querySelectorAll('[data-step-target]').forEach(stage => {
+        stage.addEventListener('click', () => {
+          const targetId = stage.dataset.stepTarget;
+          setActive(targetId);
+          window.requestAnimationFrame(() => {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        });
+      });
 
       const status = document.getElementById('copy-status');
 
